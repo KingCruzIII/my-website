@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { CssBaseline, Container } from "@material-ui/core";
+import Taskbar from "./components/Taskbar";
+import Theme from "./components/Theme";
+import background from "./assets/background.jpeg";
+import Terminal from "./components/Terminal";
 
-function App() {
+const useStyles = makeStyles(theme => ({
+  main: {
+    height: "100vh",
+    background: `url(${background})  no-repeat center center fixed`
+  }
+}));
+
+export default function App(props) {
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Theme>
+      <CssBaseline />
+      <Container component="main" className={classes.main} maxWidth={false}>
+        <Terminal />
+      </Container>
+      <Taskbar />
+    </Theme>
   );
 }
-
-export default App;

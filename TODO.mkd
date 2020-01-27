@@ -1,0 +1,6 @@
+Make Have a single "terminal" in the center that changes depending on what icon you click in the terminal.
+
+idk might be cool
+https://github.com/hbi99/genie.js
+
+https://github.com/kamilkp/geniejs
