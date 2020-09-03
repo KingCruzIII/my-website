@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
 const mapIndexed = R.addIndex(R.map);
 
 const Terminal = props => {
-  console.log(props);
   const classes = useStyles();
 
   const renderOutput = (command, index) => {
@@ -66,7 +65,6 @@ const Terminal = props => {
             {command.command}
           </Typography>
           <Typography />
-          {console.log(renderOutput(command, index))}
           {renderOutput(command, index)}
         </Fragment>
       );
