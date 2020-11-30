@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { CssBaseline, Container, Grid, Box } from "@material-ui/core";
 import Taskbar from "components/Taskbar";
@@ -11,6 +11,8 @@ import Icon from "components/common/Icon";
 import Dots from "components/decoration/Dots";
 import AboutMe from "./pages/AboutMe";
 import zIndex from "@material-ui/core/styles/zIndex";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(theme => ({
   spacer: {
@@ -49,8 +51,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function App() {
+  console.log("app rendered");
   const classes = useStyles();
   const laxRef = useRef(null);
+
+  const theme = useTheme();
+  const ops = {
+    noSsr: true
+  };
+  const [med, setMed] = useState(
+    useMediaQuery(theme.breakpoints.up("sm"), ops)
+  );
+
+  const [large, setLarge] = useState(
+    useMediaQuery(theme.breakpoints.up("md"), ops)
+  );
+
   return (
     <Theme>
       <CssBaseline />
@@ -78,7 +94,7 @@ export default function App() {
           >
             <Icon icon="moon" autoSize size="l" rotation={180} />
           </ParallaxLayer>
-          <Dots />
+          <Dots med={med} large={large} />
           <Clouds />
           <ParallaxLayer offset={1} speed={0.5}>
             <Container className={classes.main} maxWidth="md">

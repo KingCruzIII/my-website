@@ -42,7 +42,7 @@ const Intro = () => {
       </Typography>
       <Typography variant="h2">I am a full-stack web developer.</Typography>
       <Typography variant="h2">
-        This site is a WIP
+        WIP
         <BlinkingCursor variant="h2" component="span" />
       </Typography>
       <Typography variant="h2">Screen size: {size}</Typography>
