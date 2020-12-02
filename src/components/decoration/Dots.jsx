@@ -31,7 +31,7 @@ const generateRowOfDots = (count, group, row) => {
     dotSpeed = Math.floor(Math.random() * 10 + 1) / 10;
     dotSpeed = Math.random() < 0.2 ? -0.2 : dotSpeed;
     arr.push({
-      offset: group + row / count,
+      offset: group + row / count - 1,
       spacing: Math.floor(Math.random() * 100 + 1),
       size: getRandomInt(15, 6),
       speed: dotSpeed,
@@ -47,7 +47,7 @@ const generateDotGroups = (rowCount, groupNumber, maxStarPerRow, starter) => {
   group.length = group.length > rowCount ? rowCount : group.length;
 
   for (let rowNumber = group.length; rowNumber < rowCount; rowNumber++) {
-    let rowDotCount = getRandomInt(maxStarPerRow, maxStarPerRow - 2);
+    let rowDotCount = maxStarPerRow;
     group.push(generateRowOfDots(rowDotCount, groupNumber, rowNumber));
   }
   return group;
@@ -85,15 +85,15 @@ const getCount = arr => {
 const getStarSettings = (med, large) => {
   // [startingNumRows, startingMaxStars]
   if (large) {
-    return [10, 10];
+    return [10, 8];
   } else if (med) {
-    return [10, 7];
-  } else {
     return [10, 4];
+  } else {
+    return [6, 2];
   }
 };
 /*
-Group - a collection of rows. The number of groups Corisponds to the number of pages on the main screen
+Group - a collection of rows. The number of groups Corresponds to the number of pages on the main screen
 Rows - a collection of dots. 
 */
 const Dots = props => {
