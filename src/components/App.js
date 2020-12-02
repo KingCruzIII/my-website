@@ -59,13 +59,10 @@ export default function App() {
   const ops = {
     noSsr: true
   };
-  const [med, setMed] = useState(
-    useMediaQuery(theme.breakpoints.up("sm"), ops)
-  );
 
-  const [large, setLarge] = useState(
-    useMediaQuery(theme.breakpoints.up("md"), ops)
-  );
+  const med = useMediaQuery(theme.breakpoints.up("sm"), ops);
+
+  const large = useMediaQuery(theme.breakpoints.up("md"), ops);
 
   return (
     <Theme>

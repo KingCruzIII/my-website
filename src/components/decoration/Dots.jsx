@@ -44,7 +44,7 @@ const generateRowOfDots = (count, group, row) => {
 
 const generateDotGroups = (rowCount, groupNumber, maxStarPerRow, starter) => {
   let group = R.clone(starter) || [];
-  group.length = group.length > rowCount ? rowCount : group.length
+  group.length = group.length > rowCount ? rowCount : group.length;
 
   for (let rowNumber = group.length; rowNumber < rowCount; rowNumber++) {
     let rowDotCount = getRandomInt(maxStarPerRow, maxStarPerRow - 2);
@@ -57,117 +57,94 @@ const generateDots = (groupCount, rowCount, maxStarPerRow, starter) => {
   let dots = R.clone(starter) || [];
   // If we want to shrink the array then we would give a groupCount that is smaller than the length of the current array.
   // So we set the length to the smaller number which will trim off the extra elements.
-  dots.length = dots.length > groupCount ? groupCount : dots.length
+  dots.length = dots.length > groupCount ? groupCount : dots.length;
   for (let groupNumber = dots.length; groupNumber < groupCount; groupNumber++) {
-    dots.push(generateDotGroups(rowCount, groupNumber, maxStarPerRow, dots[groupNumber]));
+    dots.push(
+      generateDotGroups(rowCount, groupNumber, maxStarPerRow, dots[groupNumber])
+    );
   }
-  return dots
+  return dots;
 };
 
-const getCount = (arr) => {
+const getCount = arr => {
   let groupCount = 0;
   let rowCount = 0;
   let starCount = 0;
   arr.forEach(group => {
-    groupCount++
+    groupCount++;
     group.forEach(row => {
-      rowCount++
+      rowCount++;
       row.forEach(star => {
-        starCount++
-      })
-    })
-  })
+        starCount++;
+      });
+    });
+  });
   return starCount;
-}
+};
 
 const getStarSettings = (med, large) => {
   // [startingNumRows, startingMaxStars]
   if (large) {
     return [10, 10];
   } else if (med) {
-    return [9, 7];
+    return [10, 7];
   } else {
-    return [4, 4];
+    return [10, 4];
   }
 };
-
+/*
+Group - a collection of rows. The number of groups Corisponds to the number of pages on the main screen
+Rows - a collection of dots. 
+*/
 const Dots = props => {
-  console.log("dots rendered")
-        const theme = useTheme();
-        const ops = {
-          noSsr: true
+  const [dotArray, setDotArray] = useState([]);
+
+  useEffect(() => {
+    let size = getStarSettings(props.med, props.large);
+    // groupCount, rowCount, maxStarPerRow, starter
+
+    // for some reason adding dotArray to the end of this breaks it probably will just say fuck it and leave it creating a new array every time
+    setDotArray(generateDots(props.numGroups || 3, size[0], size[1]));
+  }, [props.med, props.large]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDotArray(randomizeOpacity(dotArray));
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [dotArray]);
+
+  const renderDots = arr => {
+    let things = [];
+    console.log(dotArray);
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        for (let k = 0; k < arr[i][j].length; k++) {
+          things.push(
+            <Dot
+              key={`group-${i}-row-${j}-dot-${k}`}
+              opacity={arr[i][j][k].opacity}
+              size={arr[i][j][k].size}
+              offset={arr[i][j][k].offset}
+              speed={arr[i][j][k].speed}
+              offsetFuzz={arr[i][j][k].fuzz}
+              spacing={arr[i][j][k].spacing}
+              row={i}
+            />
+          );
         }
-        const med = useMediaQuery(theme.breakpoints.up("sm"), ops);
+      }
+    }
+    return things;
+  };
 
-        const large = useMediaQuery(theme.breakpoints.up("md"), ops);
-
-
-        const [dotArray, setDotArray] = useState([]);
-
-
-        useEffect(() => {
-          let size = getStarSettings(med, large);
-          // groupCount, rowCount, maxStarPerRow, starter
-
-          // for some reason adding dotArray to the end of this breaks it probably will just say fuck it and leave it creating a new array every time
-          setDotArray(generateDots(props.numGroups || 3, size[0], size[1]))
-        }, [med, large]);
-
-        // need to get these from props and pass in
-        // https://stackoverflow.com/questions/16443380/common-css-media-queries-break-points
-
-
-        // let initialDotArray = generateDots(numGroups, numRows, maxStarPerRow);
-
-
-        useEffect(() => {
-          const interval = setInterval(() => {
-            setDotArray(randomizeOpacity(dotArray));
-          }, 2000);
-          return () => clearInterval(interval);
-        }, [dotArray]);
-
-        // useEffect(() => {
-        //   // console.log(getStarSettings(med, large))
-        //   // console.log("numGroups: " + numGroups)
-        //   // console.log("numRows: " + numRows)
-        //   // console.log("maxStarPerRow: " + maxStarPerRow)
-        //   ;
-        //   return;
-        // }, [numRows, maxStarPerRow, numGroups]);
-
-
-        const renderDots = arr => {
-          let things = [];
-          console.log(dotArray)
-          for (let i = 0; i < arr.length; i++) {
-            for (let j = 0; j < arr[i].length; j++) {
-              for (let k = 0; k < arr[i][j].length; k++) {
-                things.push(
-                  <Dot
-                    key={`group-${i}-row-${j}-dot-${k}`}
-                    opacity={arr[i][j][k].opacity}
-                    size={arr[i][j][k].size}
-                    offset={arr[i][j][k].offset}
-                    speed={arr[i][j][k].speed}
-                    offsetFuzz={arr[i][j][k].fuzz}
-                    spacing={arr[i][j][k].spacing}
-                    row={i}
-                  />
-                );
-              }
-            }
-          }
-          return things;
-        };
-
-        return (
-          <Fragment>
-            <div>
-              <Typography variant="h2">Star Count: {getCount(dotArray)}</Typography>
-            </div>
-            {renderDots(dotArray)}
-          </Fragment>
-        );
-      };;
+  return (
+    <Fragment>
+      <div>
+        <Typography variant="h2">Star Count: {getCount(dotArray)}</Typography>
+      </div>
+      {renderDots(dotArray)}
+    </Fragment>
+  );
+};
 export default Dots;
