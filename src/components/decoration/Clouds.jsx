@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import Icon from "components/common/Icon";
-import { ParallaxLayer } from "react-spring/renderprops-addons";
+import { ParallaxLayer } from '@react-spring/parallax'
+
 
 const Clouds = () => {
   return (

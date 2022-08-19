@@ -19,11 +19,7 @@ export default {
   ],
   devServer: {
     hot: true,
-    overlay: true,
-    watchOptions: {
-      ignored: /node_modules/
-    },
-    contentBase: "public"
+    // contentBase: path.join(__dirname, 'public')
   },
   module: {
     rules: [

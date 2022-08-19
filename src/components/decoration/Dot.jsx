@@ -1,5 +1,5 @@
 import React from "react";
-import { ParallaxLayer } from "react-spring/renderprops-addons";
+import { ParallaxLayer } from '@react-spring/parallax'
 import Icon from "components/common/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 

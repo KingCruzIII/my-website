@@ -4,7 +4,7 @@ import { CssBaseline, Container, Grid, Box } from "@material-ui/core";
 import Taskbar from "components/Taskbar";
 import Theme from "components/Theme";
 import blueGrey from "@material-ui/core/colors/blueGrey";
-import { Parallax, ParallaxLayer } from "react-spring/renderprops-addons";
+import { Parallax, ParallaxLayer } from '@react-spring/parallax'
 import Intro from "components/pages/Intro";
 import Clouds from "components/decoration/Clouds";
 import Icon from "components/common/Icon";
